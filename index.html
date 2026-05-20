@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Last Chapter: MTs Al-Hidayah Sagalaherang</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2 family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- BAGIAN WARNA & FONT --- */
+        :root {
+            --bg-color: #0f172a;       /* Warna background (Biru gelap ala IT) */
+            --card-bg: #1e293b;        /* Warna kotak list teman */
+            --text-main: #f8fafc;      /* Warna teks utama */
+            --text-muted: #94a3b8;     /* Warna teks tambahan */
+            --accent-color: #38bdf8;   /* Warna dekorasi & ikon */
+            --btn-bg: #0284c7;         /* Warna tombol rating */
+            --btn-hover: #0369a1;      /* Warna tombol saat disentuh */
+            --curtain-color: #7f1d1d;  /* Warna merah maroon khas tirai teater */
+            
+            /* Font bergaya klasik/serif kuno */
+            --font-title: 'Playfair Display', serif;
+            --font-classic: 'Cinzel', serif;
+            /* Font modern untuk halaman inti agar teks rapi */
+            --font-modern: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            font-family: var(--font-modern); /* Diubah ke font modern untuk halaman utama */
+            /* Proteksi CSS agar teks tidak bisa diblok */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            overflow-x: hidden;
+        }
+
+        /* --- HALAMAN GERBANG & ANIMASI TIRAI TEATER (Font Tetap Klasik) --- */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: auto;
+        }
+
+        .welcome-content {
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            padding: 30px;
+            z-index: 1002;
+            transition: opacity 0.5s ease;
+        }
+
+        .curtain-left, .curtain-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-color: var(--curtain-color);
+            background-image: linear-gradient(90deg, rgba(0,0,0,0.3) 0%, transparent 20%, rgba(0,0,0,0.2) 40%, transparent 60%, rgba(0,0,0,0.3) 80%, transparent 100%);
+            background-size: 60px 100%;
+            z-index: 1001;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .curtain-left { left: 0; transform-origin: left; }
+        .curtain-right { right: 0; transform-origin: right; }
+
+        .welcome-screen.fade-out { pointer-events: none; }
+        .welcome-screen.fade-out .welcome-content { opacity: 0; }
+        .welcome-screen.fade-out .curtain-left { transform: translateX(-100%); }
+        .welcome-screen.fade-out .curtain-right { transform: translateX(100%); }
+
+        .welcome-content h1 {
+            font-family: var(--font-title);
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #fff7ed;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        .welcome-content p {
+            font-family: var(--font-classic); /* Mempertahankan gaya lama di gerbang */
+            color: #f1f5f9;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .btn-welcome {
+            font-family: var(--font-classic); /* Mempertahankan gaya lama di gerbang */
+            background-color: #f8fafc;
+            color: #7f1d1d;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .btn-welcome:hover {
+            background-color: #7f1d1d;
+            color: #f8fafc;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* --- CONTAINER UTAMA (HALAMAN INTI) --- */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        /* --- HEADER --- */
+        .header h1 {
+            font-family: var(--font-title);
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-family: var(--font-modern);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+            margin: 25px 0;
+        }
+
+        /* --- LIST TEMAN --- */
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            color: var(--accent-color);
+            text-align: left;
+            padding-left: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .friend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .friend-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .friend-card:hover {
+            transform: translateY(-2px);
+            background-color: #24344d;
+        }
+
+        .friend-avatar {
+            font-family: var(--font-title);
+            width: 45px;
+            height: 45px;
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .friend-info h3 {
+            font-family: var(--font-title);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .friend-info p {
+            font-family: var(--font-modern);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* --- TOMBOL INTERAKSI --- */
+        .btn-rating {
+            font-family: var(--font-modern);
+            display: block;
+            background-color: var(--btn-bg);
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn-rating:hover {
+            background-color: var(--btn-hover);
+            transform: translateY(-2px);
+        }
+
+        /* --- STRUKTUR POP-UP (MODAL BOX) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-box h2 {
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .modal-box p {
+            font-family: var(--font-modern);
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            white-space: pre-line;
+            letter-spacing: 0.5px;
+        }
+
+        /* Kelas CSS khusus untuk membuat biodata rata kiri */
+        .text-left-align {
+            text-align: left !important;
+            padding: 0 10px;
+        }
+
+        /* Pembungkus tombol di pop-up agar rapi */
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-close, .btn-next {
+            font-family: var(--font-modern);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .btn-close {
+            background-color: #334155;
+        }
+
+        .btn-close:hover {
+            background-color: #475569;
+        }
+
+        .btn-next {
+            background-color: var(--btn-bg);
+        }
+
+        .btn-next:hover {
+            background-color: var(--btn-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="curtain-left"></div>
+        <div class="curtain-right"></div>
+        
+        <div class="welcome-content">
+            <h1>CONGRATULATIONS ON YOUR GRADUATION</h1>
+            <button class="btn-welcome" onclick="bukaHalamanInti()">Lanjut ke Halaman Berikutnya➔</button>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="header">
+            <h1>The Last Chapter:<br>MTs Al-Hidayah Sagalaherang</h1>
+            <div class="divider"></div>
+            <p>
+                Hai semuanya! Nggak kerasa ya udah 3 tahun kita bareng-bareng di MTs. Walaupun ada yang kenal baru baru ini sih, tapi gapapa kita semua udah punya banyak kenangan yang indah.
+                Sebelum kita pisah ke sekolah baru, dan fokus ke hidup kita masing masing robby mau ngucapin, mohon maaf lahir batin ya kalau ada salah kata atau perbuatan yang kurang berkenan. Sukses buat kita semua di jenjang berikutnya! 🙌✨
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 class="section-title">IFFORY & My Best Girl Friend</h2>
+        <div class="friend-list">
+            
+            <div class="friend-card" onclick="bukaPesan('Ofa Muzakki', 'Nama: Ofa Muzakki\nTTL: Subang, 15 Februari 2011\nHobi: Ngedit\nMotto Hidup: Saya tidak ada motto hidup, saya menerima apa adanya dan dijalani\nLagu Favorit: Bergema sampai selamanya dan Kota ini tak sama tanpamu By Nadhif Basalamah\nCita-cita: Pengen bahagiain ortu', 'Haii Ofa (Best Friend Forever ini mahh) \nMakasih banyak ya udah jadi sahabat dan temen sekelas/sebangku yang palinggg seru, makasih udah jadi bagian dari perjalanan hidup Robby. Sukses terus di luar sanaa, doa terbaik dari Robby. Maaf mun urang selama 3 tahun ie sok egois ka maneh nyaa, maafin pliss. Sukses terus ke depannya bro!')">
+                <div class="friend-avatar">1</div>
+                <div class="friend-info">
+                    <h3>Ofa Muzakki</h3>
+                    <p>CEO PT. Indah Fashion Jakarta, Best Friend🔥🔥.</p>
+                </div>
+            </div>
+
+            <div class="friend-card" onclick="bukaPesan('Yuda Afriansyah', 'Nama: Yuda Afriansyah\nTTL: Subang, 17 Mei 2012\nHobi: Menggambar\nMotto Hidup: Menjadi Penyendiri\nPlaylist/Lagu Favorit: Feast Hindia\nCita-cita: Membuat game yang seru', 'Woiii Yud!\nTong nyepaman Stiker di grup pliss, tapi mun eweh maneh grup pasti sepi bangett sihh, Kurang-kurangin begadang nonton anime sama mabarnya wkwk, candaa. Makasih ya udah jadi partner ngobrol yang seru selama ini. Sukses terus, moga jadi orang sukses yaaa!')">
+                <div class="friend-avatar">2</div>
+                <div class="friend-info">
+                    <h3>Yuda Afriansyah</h3>
+                    <p>Si calon gamer, Si paling anime.</p>
+                </div>
+            </div>
+
+            <div class="friend-card" onclick="bukaPesan('Irwan Ubaidillah', 'Nama: Irwan Ubaidillah\nTTL: Isi di sini...\nHobi: Bolos & Keluar Kelas\nMotto Hidup: Isi di sini...\nPlaylist Lagu: Isi di sini...\nLagu Favorit: Isi di sini...\nCita-cita: Garda Terdepan Kesuksesan', 'Haloo Irwan!\nSi garda terdepan penjelajah luar kelas pas jam pelajaran wkwk. Makasih ya broo udah bikin hari-hari di MTs jadi rame. Maafnya mun aya perkataan urang nu nganyeriken hate maneh. Sukses bro di sekolah baru!, kade tong bolos waee wann')">
+                <div class="friend-avatar">3</div>
+                <div class="friend-info">
+                    <h3>Irwan Ubaidillah</h3>
+                    <p>Garda terdepan kalau urusan bolos inimah.</p>
+                </div>
+            </div> 
+            
+            <div class="friend-card" onclick="bukaPesan('Radifa Arafat Setiawan', 'Nama: Radifa Arafat Setiawan\nTTL: Isi di sini...\nHobi: Gaming\nMotto Hidup: Isi di sini...\nPlaylist Lagu: Isi di sini...\nLagu Favorit: Isi di sini...\nCita-cita: Calon Gamer Kaya Yuda', ' Radifa!\nAdmin abadi IFORRY nih. Admin tapi jarang aktif. Maaf lahir batinn nya radifa, maaf mun pas urang masih jadi ketua, urang sok maksa maneh latihan 🙏, Sukses terus ke depannya!')">
+                <div class="friend-avatar">4</div>
+                <div class="friend-info">
+                    <h3>Radifa Arafat Setiawan</h3>
+                    <p>Si calon gamer kaya yuda, Admin IFORRY.</p>
+                </div>
+            </div>   
+            
+            <div class="friend-card" onclick="bukaPesan('M. Fahri Wahyudin', 'Nama: M. Fahri Wahyudin\nTTL: Subang, 21 Maret 2012\nHobi: Menggambar dan Menyanyi\nMotto Hidup: Keep Walking Until the Dark Path Becomes Bright\nPlaylist/Lagu Favorit: ONLY-LEE HI, ETA-Newjeans, Choom-Babymonster\nCita-cita: Jadi Idol', 'Halo Pak Wakil Ketua!\nUsahakan razin latihan nya, urus ekskul silat. Nanti kalau beneran jadi idol K-Pop, awas aja lu lupa sama IFORRY, wkwk!')">
+                <div class="friend-avatar">5</div>
+                <div class="friend-info">
+                    <h3>M. Fahri Wahyudin</h3>
+                    <p>Pak Wakil Ketua Silat, Incu babeh YG, Calon Idol K-Pop.</p>
+                </div>
+            </div>         
+
+            <div class="friend-card" onclick="bukaPesan('Salsa Nihatul Hasanah', 'Nama: Salsa Nihatul Hasanah\nTTL: Subang, 29 Maret 2012\nHobi: Masak\nMotto Hidup: Teuing\nPlaylist/Lagu Favorit: Nadin Amizah, Sal Priadi, Hindia\nCita-cita: Guru dan CEO', 'Hai Salsa!\nMakasih banget ya udah jadi bestie paling terbaik Robby di MTs. Makasih udah sabar dengerin keluh kesah atau cerita random Robby. Sukses terus ya di Pasantren, jangan lupain pertemanan kita, awass asingggg!')">
+                <div class="friend-avatar">6</div>
+                <div class="friend-info">
+                    <h3>Salsa Nihatul Hasanah</h3>
+                    <p>Sahabat terbaik di seluruh penjuru bumi, Bestie Forever✨✨.</p>
+                </div>
+            </div> 
+            
+        </div>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1Biw2WhQ2kKHLpt7g54WUYzs_1hJg9d3fYPuW0l3rmjGZXQ/viewform?usp=sharing&ouid=115886963936044991210" target="_blank" class="btn-rating">
+            💬 Kesan dan Pesan buat Robby
+        </a>
+        
+        <div style="margin-top: 50px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 15px;">
+            <p style="color: var(--text-muted); font-size: 0.75rem; opacity: 0.5; letter-spacing: 1px;">
+                Designed by Robby Mardiansyah & Artificial Intelligence 
+            </p>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="kotakPopUp">
+        <div class="modal-box">
+            <h2 id="namaTemanPopUp">Nama Teman</h2>
+            <p id="pesanTemanPopUp">Isi Data...</p>
+            <div class="modal-buttons">
+                <button class="btn-close" onclick="tutupPesan()">Tutup</button>
+                <button class="btn-next" id="tombolLanjut" onclick="tampilkanPesanRahasia()">Lanjut ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pesanRahasiaSementara = "";
+
+        function bukaHalamanInti() {
+            document.getElementById('welcomeScreen').classList.add('fade-out');
+        }
+
+        function bukaPesan(nama, biodata, pesanRahasia) {
+            document.getElementById('namaTemanPopUp').innerText = nama;
+            
+            let elemenPesan = document.getElementById('pesanTemanPopUp');
+            elemenPesan.innerText = biodata; 
+            elemenPesan.classList.add('text-left-align'); 
+            
+            pesanRahasiaSementara = pesanRahasia; 
+            
+            document.getElementById('tombolLanjut').style.display = "block";
+            document.getElementById('kotakPopUp').classList.add('active');
+        }
+
+        function tampilkanPesanRahasia() {
+            let elemenPesan = document.getElementById('pesanTemanPopUp');
+            elemenPesan.innerText = pesanRahasiaSementara; 
+            elemenPesan.classList.remove('text-left-align'); 
+            
+            document.getElementById('tombolLanjut').style.display = "none"; 
+        }
+
+        function tutupPesan() {
+            document.getElementById('kotakPopUp').classList.remove('active');
+        }
+    </script>
+
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 's' || e.key === 'p' || e.key === 'u' || e.key === 'c')) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>
+
